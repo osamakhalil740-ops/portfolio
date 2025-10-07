@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Domain Valuator (Creative Lite)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0d16;
+      --bg2: #0e1424;
+      --text: #eaf2fb;
+      --muted: #9aabbc;
+      --accent: #7dd3ff;
+      --accent2: #b5a0ff;
+      --ok: #82f7c2;
+      --err: #ff7d7d;
+      --border: rgba(255, 255, 255, .14)
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      height: 100%
+    }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: "Outfit", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1400px 800px at 110% -10%, rgba(125, 227, 255, .16), transparent 60%),
+        radial-gradient(1100px 760px at -10% 10%, rgba(183, 146, 255, .14), transparent 60%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      overflow-x: hidden
+    }
+
+    .nebula {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(80px);
+      opacity: .25
+    }
+
+    .n {
+      position: absolute;
+      border-radius: 50%
+    }
+
+    .n1 {
+      width: 520px;
+      height: 520px;
+      left: -120px;
+      top: -80px;
+      background: radial-gradient(closest-side, #77e2ff, transparent);
+      animation: float 12s ease-in-out infinite alternate
+    }
+
+    .n2 {
+      width: 640px;
+      height: 640px;
+      right: -140px;
+      top: 120px;
+      background: radial-gradient(closest-side, #b891ff, transparent);
+      animation: float 16s ease-in-out infinite alternate
+    }
+
+    .n3 {
+      width: 420px;
+      height: 420px;
+      left: 12%;
+      bottom: -140px;
+      background: radial-gradient(closest-side, #7bffb3, transparent);
+      animation: float 18s ease-in-out infinite alternate
+    }
+
+    @keyframes float {
+      to {
+        transform: translate3d(28px, 22px, 0) scale(1.04)
+      }
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 28px auto;
+      padding: 0 18px;
+      position: relative;
+      z-index: 1
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 14px
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px
+    }
+
+    .logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: conic-gradient(from 200deg, #77e2ff, #b891ff, #7bffb3, #77e2ff);
+      box-shadow: 0 0 24px rgba(119, 226, 255, .35)
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: .3px
+    }
+
+    .tag {
+      color: var(--muted);
+      margin: 6px 0 0
+    }
+
+    .chip {
+      display: inline-block;
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 13px;
+      backdrop-filter: blur(8px)
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 16px
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, .04));
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 26px rgba(125, 227, 255, .10), 0 2px 10px rgba(183, 146, 255, .10)
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 16px;
+      color: #cfe3f7
+    }
+
+    label {
+      display: block;
+      margin: 8px 0 6px;
+      color: var(--muted);
+      font-size: 14px
+    }
+
+    textarea,
+    input,
+    button,
+    progress {
+      width: 100%
+    }
+
+    textarea,
+    input {
+      background: rgba(255, 255, 255, .05);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      outline: none;
+      padding: 10px 12px
+    }
+
+    textarea:focus,
+    input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(119, 226, 255, .18)
+    }
+
+    textarea {
+      min-height: 170px;
+      resize: vertical
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      align-items: end
+    }
+
+    .checkbox {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-bottom: 2px
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px
+    }
+
+    button {
+      background: linear-gradient(180deg, var(--accent), #2fa3df);
+      color: #04121c;
+      border: none;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-weight: 800;
+      letter-spacing: .2px;
+      cursor: pointer;
+      box-shadow: 0 10px 26px rgba(119, 226, 255, .28)
+    }
+
+    button.secondary {
+      background: rgba(255, 255, 255, .06);
+      color: var(--text);
+      border: 1px solid var(--border);
+      box-shadow: none
+    }
+
+    button:disabled {
+      opacity: .6;
+      cursor: not-allowed
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 26px rgba(125, 227, 255, .26)
+    }
+
+    .status {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 10px
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid var(--border);
+      font-size: 13px
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #7d8ea1
+    }
+
+    .dot.live {
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--accent)
+    }
+
+    .progress-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center
+    }
+
+    progress {
+      height: 12px;
+      appearance: none;
+      -webkit-appearance: none
+    }
+
+    progress::-webkit-progress-bar {
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      overflow: hidden
+    }
+
+    progress::-webkit-progress-value {
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 999px;
+      box-shadow: 0 0 18px rgba(119, 226, 255, .35)
+    }
+
+    .table-wrap {
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      max-height: 420px
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      background: rgba(7, 10, 18, .86);
+      backdrop-filter: blur(8px)
+    }
+
+    th,
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      text-align: left
+    }
+
+    tbody tr:nth-child(odd) {
+      background: rgba(255, 255, 255, .03)
+    }
+
+    .pill {
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 12px;
+      display: inline-block
+    }
+
+    .ok {
+      color: #003b20;
+      background: linear-gradient(180deg, #7bffb3, #56e59a)
+    }
+
+    .err {
+      color: #3b0000;
+      background: linear-gradient(180deg, #ff9b9b, #ff6b6b)
+    }
+
+    footer {
+      margin: 14px 0 4px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center
+    }
+
+    @media (max-width:980px) {
+      .grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    @media (max-width:720px) {
+      .grid-3 {
+        grid-template-columns: 1fr
+      }
+
+      .actions {
+        flex-direction: column
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="nebula">
+    <div class="n n1"></div>
+    <div class="n n2"></div>
+    <div class="n n3"></div>
+  </div>
+  <div class="container">
+    <div class="hero">
+      <div>
+        <div class="brand">
+          <div class="logo"></div>
+          <h1>Domain Valuator</h1>
+        </div>
+        <p class="tag">Paste domains (one per line or comma-separated). Mock is ON. We clear browser storage every 10
+          attempts.</p>
+      </div>
+      <div class="toolbar">
+        <span class="chip">Mock: On</span>
+        <span class="chip">Max: 2000 domains</span>
+        <span class="chip">Sequential + Delay</span>
+      </div>
+    </div>
+
+    <div class="grid">
+      <section class="card">
+        <h3>Input</h3>
+        <label for="domains">Domain list</label>
+        <textarea id="domains" placeholder="example.com
+www.example.net
+https://awesome.io/path?q=1, site.co.uk, http://www.long-domain.org"></textarea>
+
+        <div class="grid-3">
+          <div>
+            <label for="delay">Delay between calls (ms)</label>
+            <input id="delay" type="number" min="0" value="300">
+          </div>
+          <div class="checkbox">
+            <input id="mock" type="checkbox" checked>
+            <label for="mock">Use Mock Valuation</label>
+          </div>
+          <div></div>
+        </div>
+
+        <div class="actions">
+          <button id="start" type="button">Start</button>
+          <button id="stop" class="secondary" disabled>Stop</button>
+          <button id="clear" class="secondary">Clear Results</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h3>Status</h3>
+        <div class="status">
+          <span class="badge"><span id="dot" class="dot"></span><span id="state">Idle</span></span>
+          <span class="badge">Attempts: <strong id="attempts">0</strong></span>
+          <span class="badge">Clears: <strong id="clears">0</strong></span>
+        </div>
+        <div class="progress-row">
+          <progress id="progress" value="0" max="100"></progress>
+          <span class="muted" id="pct">0%</span>
+        </div>
+
+        <h3 style="margin:16px 0 8px">Results</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Domain</th>
+                <th>Status</th>
+                <th>Valuation</th>
+                <th>Time (ms)</th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <footer><small>Demo UI — Mock mode only to avoid CORS issues.</small></footer>
+  </div>
+
+  <script>
+    (() => {
+      const domainsEl = document.getElementById('domains');
+      const delayEl = document.getElementById('delay');
+      const mockEl = document.getElementById('mock');
+
+      const startBtn = document.getElementById('start');
+      const stopBtn = document.getElementById('stop');
+      const clearBtn = document.getElementById('clear');
+
+      const dot = document.getElementById('dot');
+      const stateEl = document.getElementById('state');
+      const attemptsEl = document.getElementById('attempts');
+      const clearsEl = document.getElementById('clears');
+      const progressEl = document.getElementById('progress');
+      const pctEl = document.getElementById('pct');
+      const rowsEl = document.getElementById('rows');
+
+      let running = false, stopFlag = false, attempts = 0, clears = 0;
+
+      // NEW relaxed parsing
+      function isDomainRelaxed(s) {
+        return /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}$/i.test(s);
+      }
+      function extractHostname(line) {
+        let s = line.trim();
+        if (!s) return '';
+        try {
+          if (!/^https?:\/\//i.test(s)) s = 'http://' + s;
+          const u = new URL(s);
+          s = u.hostname || s;
+        } catch { /* keep as is */ }
+        s = s.toLowerCase();
+        if (s.startsWith('www.')) s = s.slice(4);
+        s = s.replace(/[^a-z0-9.-]/g, '');
+        s = s.replace(/\.{2,}/g, '.').replace(/-+/g, '-');
+        s = s.replace(/^\.+|\.+$/g, '');
+        return s;
+      }
+      function parseInput(raw) {
+        const parts = raw.split(/[\r\n,]+/);
+        const out = [];
+        for (const p of parts) {
+          const host = extractHostname(p);
+          if (host && isDomainRelaxed(host)) out.push(host);
+        }
+        return Array.from(new Set(out)).slice(0, 2000);
+      }
+
+      function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+      function mockScore(d) {
+        let h = 2166136261; for (let i = 0; i < d.length; i++) { h ^= d.charCodeAt(i); h += (h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24); }
+        const v = Math.abs(h % 1000); return Math.round(120 + (v / 1000) * 5200);
+      }
+      async function clearLocal() { try { localStorage.clear() } catch { } try { sessionStorage.clear() } catch { } try { if (window.caches && caches.keys) { const ks = await caches.keys(); await Promise.all(ks.map(k => caches.delete(k))); } } catch { } }
+      function setRunning(v) { running = v; startBtn.disabled = v; stopBtn.disabled = !v; domainsEl.disabled = v; delayEl.disabled = v; mockEl.disabled = v; dot.classList.toggle('live', v); }
+      function setState(t) { stateEl.textContent = t; }
+      function setAttempts() { attemptsEl.textContent = String(attempts); }
+      function setClears() { clearsEl.textContent = String(clears); }
+      function setProgress(p) { progressEl.value = p; pctEl.textContent = p + '%'; }
+      function addRow(i, d, res) {
+        const tr = document.createElement('tr');
+        const td = t => { const c = document.createElement('td'); c.textContent = t; return c; };
+        tr.append(td(i + 1), td(d));
+        const st = document.createElement('td'); const pill = document.createElement('span'); pill.className = 'pill ' + (res.ok ? 'ok' : 'err'); pill.textContent = res.ok ? 'OK' : 'ERROR'; st.appendChild(pill);
+        const val = document.createElement('td'); val.textContent = res.ok ? (res.score ?? '-') : (res.error ?? '-');
+        const ms = td(res.ms);
+        tr.append(st, val, ms); rowsEl.appendChild(tr);
+      }
+
+      startBtn.onclick = async () => {
+        if (running) return;
+        const list = parseInput(domainsEl.value); // use relaxed parser
+        if (list.length === 0) { setState('Please paste valid domains.'); return; }
+
+        const throttle = Math.max(0, Number(delayEl.value) || 0);
+        const useMock = !!mockEl.checked;
+
+        setRunning(true); stopFlag = false; setState('Processing...'); setProgress(0);
+        attempts = 0; setAttempts();
+        const clearsBefore = clears;
+
+        for (let i = 0; i < list.length; i++) {
+          if (stopFlag) break;
+          const d = list[i];
+          attempts++; setAttempts();
+
+          const t0 = performance.now();
+          let res;
+          try {
+            const score = useMock ? mockScore(d) : mockScore(d); // mock only
+            await delay(140 + Math.random() * 300);
+            res = { ok: true, score, ms: Math.round(performance.now() - t0) };
+          } catch (e) {
+            res = { ok: false, error: String(e && e.message || e), ms: Math.round(performance.now() - t0) };
+          }
+
+          addRow(i, d, res);
+
+          if (attempts % 10 === 0) { await clearLocal(); clears++; setClears(); }
+
+          const p = Math.round(((i + 1) / list.length) * 100);
+          setProgress(p); setState(`Processing (${i + 1}/${list.length})`);
+
+          if (throttle > 0 && i < list.length - 1) await delay(throttle);
+        }
+
+        if (!stopFlag) {
+          const newlyCleared = clears - clearsBefore;
+          setState(`Done. Processed ${list.length} domains (clears: ${newlyCleared}).`);
+          setRunning(false);
+        }
+      };
+
+      stopBtn.onclick = () => { stopFlag = true; setState('Stopping...'); };
+      clearBtn.onclick = () => { rowsEl.innerHTML = ''; setProgress(0); setState('Idle'); };
+    })();
+  </script>
+</body>
+
+</html>
